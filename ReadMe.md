@@ -1,25 +1,30 @@
-# ARDUINO RFID CLONER
+# Arduino RFID Cloner
 
--   Aby kod działał poprawnie trzeba zainstalować biblioteki:
+To ensure proper functioning of the code, you need to install the following libraries:
+- MFRC522
+- LiquidCrystal_I2C
 
-1. MFRC522
-2. LiqiudCrystal_I2C
+## About the Project
 
-# O projekcie
+This project allows you to clone RFID tags and cards operating at a frequency of 13.56 MHz.
 
-Ten projekt pozwala kopiować pchełki i karty o częstotliwości 13.56 MHz.
+## Required Components:
 
-# Potrzebne rzeczy:
+- 1 Arduino (preferably Nano)
+- 1 MFRC522
+- 1 switch
+- 1 breadboard
+- Male-to-male jumper wires
+- Power source
+- 13.56MHz RFID cards/keychains with write capability
+- 3 LEDs
+- 5 resistors { 3x 220 Ω (for LEDs), 2x 10000 Ω (for switches) }
+- 2 switches
+- 1 LCD screen 1602
+- 1 HD44780 I2C LCD Converter
 
--   1 arduino (najlepiej nano)
--   1 MFRC 522
--   1 przełącznik
--   1 płytka stykowa
--   kable męsko-męskie
--   źródło zasilania
--   karty / breloczki o częstotliwości 13.56MHz z możliwością wielokrotnego zapisu
--   3 diody led
--   5 rezystorów { 3x 220 Ω (do diod), 2x10000 Ω (do przełączników) }
--   2 przełączniki
--   1 ekran LCD 1602
--   1 Konwerter I2C LCD HD44780
+Please make sure to wire the components as specified in the project documentation for proper functionality.
+
+---
+
+Sometimes maybe I will upload schematic 🗿
