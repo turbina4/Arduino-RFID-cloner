@@ -8,6 +8,13 @@ To ensure proper functioning of the code, you need to install the following libr
 
 This project allows you to clone RFID tags and cards operating at a frequency of 13.56 MHz.
 
+## How to Copy Data:
+
+To copy data from one card to another, follow these steps:
+1. Begin by placing the card from which you want to copy data.
+2. Switch the toggle switch.
+3. Now, place the second card.
+
 ## Required Components:
 
 - 1 Arduino (preferably Nano)
