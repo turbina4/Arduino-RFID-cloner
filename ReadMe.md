@@ -34,4 +34,4 @@ Please make sure to wire the components as specified in the project documentatio
 
 ---
 
-Sometimes maybe I will upload schematic 🗿
+no schematic for now 🗿
