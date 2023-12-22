@@ -1,35 +1,35 @@
 #include <SPI.h>
 #include <MFRC522.h>
-#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-// RFID module pin definitions
-#define SS_PIN 10
-#define RST_PIN 9
+// Constants for display
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define JUMP 12
+
+// Objects for RFID and display
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+MFRC522 rfid(10, 9);  // SS_PIN, RST_PIN
+MFRC522 mfrc522(10, 9);  // Second RFID module
 
 // State variables
-byte btn_state;
 byte nuidPICC[4];  // Store the UID of the last scanned card
 byte newUid[] = {};  // Store the new UID for writing to another card
 
-// RFID module instances
-MFRC522 rfid(SS_PIN, RST_PIN);
-MFRC522 mfrc522(SS_PIN, RST_PIN);
-
 // MIFARE key for authentication
 MFRC522::MIFARE_Key key;
-
-// I2C LCD instance
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-
-// Function prototypes
-void printHex(byte *buffer, byte bufferSize);
-void printDec(byte *buffer, byte bufferSize);
 
 // Define digital pins for buttons and LEDs
 #define MAIN_BTN A0    // Main button pin
 #define BTN2 A1        // Second button pin
 #define GREENLED 8     // Green LED pin
 #define REDLED 7       // Red LED pin
+
+// Function prototypes
+void printHex(byte *buffer, byte bufferSize);
+void printDec(byte *buffer, byte bufferSize);
 
 void setup() {
   // Initialize serial communication
@@ -38,10 +38,6 @@ void setup() {
 
   // Initialize RFID module
   rfid.PCD_Init();
-
-  // Initialize LCD
-  lcd.init();
-  lcd.backlight();
 
   // Define button and LED pin modes
   pinMode(MAIN_BTN, INPUT);
@@ -54,21 +50,27 @@ void setup() {
     key.keyByte[i] = 0xFF;
   }
 
-  // Display initialization message on LCD
-  Serial.println(F("This code scans the MIFARE Classic NUID."));
-  Serial.print(F("Using the following key:"));
-  printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
-
-  lcd.clear();
-  lcd.print("RFID Cloner");
-  delay(1500);
-  lcd.clear();
-  lcd.print("Scan card...");
+  // Display initialization message on display
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("SSD1306 allocation failed"));
+  }
+  delay(500);
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("RFID Cloner");
+  display.setCursor(0, 16);
+  display.println("Scan card...");
+  display.display();
 }
 
 void loop() {
   // Check if the main button is pressed
   if (analogRead(MAIN_BTN) == 0) {
+    display.fillRect(0, 64 - 12, 128, 64, SSD1306_BLACK);
+    display.display();
+
     // Check if a new card is present
     if (!rfid.PICC_IsNewCardPresent())
       return;
@@ -101,23 +103,29 @@ void loop() {
       for (byte i = 0; i < 4; i++) {
         nuidPICC[i] = rfid.uid.uidByte[i];
       }
-      lcd.clear();
-      // Display the UID on the LCD
-      lcd.print("HEX: ");
-      lcd.setCursor(5, 0);
+      display.clearDisplay();
+      display.setCursor(0, 0);
+      display.println("RFID Cloner");
+      display.setCursor(0, JUMP + 4);
+
+      // Display the UID on the display
+      display.println("HEX: ");
+      display.setCursor(8 * 3, JUMP + 4);
 
       Serial.println(F("The NUID tag is:"));
       Serial.print(F("In hex: "));
       printHex(rfid.uid.uidByte, rfid.uid.size);
       Serial.println();
 
-      lcd.setCursor(0, 1);
-      lcd.print("DEC: ");
-      lcd.setCursor(5, 1);
+      display.setCursor(0, JUMP * 2 + 4);
+      display.println("DEC: ");
+      display.setCursor(8 * 3, JUMP * 2 + 4);
 
       Serial.print(F("In dec: "));
       printDec(rfid.uid.uidByte, rfid.uid.size);
       Serial.println();
+
+      display.display();
 
       // Provide visual feedback with the green LED
       digitalWrite(GREENLED, HIGH);
@@ -170,7 +178,7 @@ void loop() {
     mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
 
     // Delay before reading another card
-    delay(2000);
+    delay(1000);
   }
 }
 
@@ -180,7 +188,7 @@ void printHex(byte *buffer, byte bufferSize) {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
 
-    lcd.print(buffer[i], HEX);
+    display.print(buffer[i], HEX);
   }
 }
 
@@ -190,6 +198,6 @@ void printDec(byte *buffer, byte bufferSize) {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], DEC);
 
-    lcd.print(buffer[i], DEC);
+    display.print(buffer[i], DEC);
   }
 }
