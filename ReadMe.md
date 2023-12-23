@@ -10,10 +10,10 @@ This project allows you to clone RFID tags and cards operating at a frequency of
 
 To ensure proper functioning of the code, you need to install the following libraries:
 
--   MFRC522
--   Wire
--   Adafruit_GFX
--   Adafruit_SSD1306
+-   MFRC522.h
+-   Wire.h
+-   Adafruit_GFX.h
+-   Adafruit_SSD1306.h
 
 ## How to Copy Data:
 
