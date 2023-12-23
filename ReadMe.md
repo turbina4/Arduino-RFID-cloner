@@ -1,15 +1,19 @@
 # Arduino RFID Cloner
 
+This project allows you to clone RFID tags and cards operating at a frequency of 13.56 MHz.
+
+![Image of Cloner](Images/DSC00118.JPG)
+
+<sup>*Note: The OLED display functions correctly in reality; any display issues in the image are due to the camera.*</sup>
+
+## Libraries
+
 To ensure proper functioning of the code, you need to install the following libraries:
 
 -   MFRC522
 -   Wire
 -   Adafruit_GFX
 -   Adafruit_SSD1306
-
-## About the Project
-
-This project allows you to clone RFID tags and cards operating at a frequency of 13.56 MHz.
 
 ## How to Copy Data:
 
