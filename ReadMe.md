@@ -6,6 +6,12 @@ This project allows you to clone RFID tags and cards operating at a frequency of
 
 <sup>*Note: The OLED display functions correctly in reality; any display issues in the image are due to the camera.*</sup>
 
+## TODO
+
+* ❌ Add 125 kHz read/emulate support
+* ❌ Make better interface
+* ❌ Design pcb
+
 ## Libraries
 
 To ensure proper functioning of the code, you need to install the following libraries:
